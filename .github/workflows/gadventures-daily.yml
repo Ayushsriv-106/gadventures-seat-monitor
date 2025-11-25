@@ -1,0 +1,37 @@
+name: Daily G Adventures Seat Report
+
+on:
+  schedule:
+    # Every day at 6:00 UTC (11:30 AM IST)
+    - cron: "0 6 * * *"
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    env:
+      GMAIL_USER: ${{ secrets.GMAIL_USER }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install Playwright browsers
+        run: |
+          python -m playwright install chromium
+          python -m playwright install-deps
+
+      - name: Run script
+        run: |
+          python check_gadventures.py
