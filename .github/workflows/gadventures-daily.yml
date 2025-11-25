@@ -2,8 +2,9 @@ name: Daily G Adventures Seat Report
 
 on:
   schedule:
-    # Every day at 6:00 UTC (11:30 AM IST)
     - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
 
 jobs:
   run-monitor:
